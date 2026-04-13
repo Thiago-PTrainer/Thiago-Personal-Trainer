@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Thiago Personal Trainer – Transforme seu Corpo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --fire: #FF3D00;
+    --yellow: #FFD600;
+    --dark: #0A0A0A;
+    --darker: #050505;
+    --gray: #1A1A1A;
+    --mid: #2C2C2C;
+    --text: #F0F0F0;
+    --muted: #888;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: .5;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 5%;
+    background: rgba(5,5,5,.85);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,61,0,.15);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    color: var(--fire);
+  }
+  .nav-logo span { color: var(--yellow); }
+  nav a.cta-nav {
+    background: var(--fire);
+    color: #fff;
+    font-weight: 700;
+    font-size: .85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px 22px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background .2s, transform .2s;
+  }
+  nav a.cta-nav:hover { background: #e63200; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 5% 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 80% 50%, rgba(255,61,0,.18) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(255,214,0,.08) 0%, transparent 60%),
+      var(--darker);
+  }
+  .hero-lines {
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(
+      90deg, rgba(255,255,255,.02) 0px, rgba(255,255,255,.02) 1px, transparent 1px, transparent 80px
+    );
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 680px; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,214,0,.12);
+    border: 1px solid rgba(255,214,0,.35);
+    color: var(--yellow);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+    animation: fadeUp .6s ease both;
+  }
+  .badge::before { content: '●'; font-size: .5rem; animation: pulse 1.5s infinite; }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 9vw, 7.5rem);
+    line-height: .95;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+    animation: fadeUp .7s .1s ease both;
+  }
+  h1 .highlight { color: var(--fire); }
+  h1 .sub-highlight { color: var(--yellow); }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: #bbb;
+    line-height: 1.65;
+    max-width: 520px;
+    margin-bottom: 40px;
+    animation: fadeUp .7s .2s ease both;
+  }
+
+  .hero-ctas {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    animation: fadeUp .7s .3s ease both;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--fire);
+    color: #fff;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 18px 40px;
+    border-radius: 6px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 8px 30px rgba(255,61,0,.35);
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.15) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform .5s;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(255,61,0,.5); }
+  .btn-primary:hover::after { transform: translateX(100%); }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--text);
+    font-weight: 600;
+    font-size: .95rem;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,.2);
+    padding: 17px 32px;
+    border-radius: 6px;
+    transition: border-color .2s, color .2s;
+  }
+  .btn-ghost:hover { border-color: var(--fire); color: var(--fire); }
+
+  .hero-stats {
+    display: flex; gap: 40px; flex-wrap: wrap;
+    margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid rgba(255,255,255,.07);
+    animation: fadeUp .7s .4s ease both;
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    color: var(--yellow);
+    line-height: 1;
+  }
+  .stat-label { font-size: .82rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(30px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 100px 5%; }
+  .section-tag {
+    font-size: .75rem; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--fire);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .section-title span { color: var(--fire); }
+  .section-sub { color: #999; font-size: 1.05rem; line-height: 1.6; max-width: 540px; }
+
+  /* ── PROBLEMS ── */
+  .problems { background: var(--gray); }
+  .problems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2px;
+    margin-top: 60px;
+    border: 2px solid rgba(255,61,0,.2);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .problem-card {
+    background: var(--dark);
+    padding: 36px 30px;
+    transition: background .25s;
+  }
+  .problem-card:hover { background: #111; }
+  .problem-icon { font-size: 2rem; margin-bottom: 16px; }
+  .problem-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+  .problem-card p { color: var(--muted); font-size: .92rem; line-height: 1.6; }
+
+  /* ── HOW IT WORKS ── */
+  .steps-wrap { margin-top: 70px; display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex; gap: 36px; align-items: flex-start;
+    padding: 40px 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    position: relative;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    color: rgba(255,61,0,.15);
+    line-height: 1;
+    min-width: 90px;
+    transition: color .3s;
+  }
+  .step:hover .step-num { color: rgba(255,61,0,.4); }
+  .step-body h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 10px; }
+  .step-body p { color: #999; line-height: 1.65; }
+  .step-tag {
+    display: inline-block;
+    background: rgba(255,214,0,.1);
+    color: var(--yellow);
+    font-size: .72rem; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+  }
+
+  /* ── WHAT YOU GET ── */
+  .offers { background: var(--gray); }
+  .offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 64px;
+  }
+  .offer-card {
+    background: var(--dark);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 12px;
+    padding: 36px 30px;
+    position: relative;
+    overflow: hidden;
+    transition: transform .25s, border-color .25s;
+  }
+  .offer-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--fire), var(--yellow));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .3s;
+  }
+  .offer-card:hover { transform: translateY(-6px); border-color: rgba(255,61,0,.3); }
+  .offer-card:hover::before { transform: scaleX(1); }
+  .offer-icon { font-size: 2.2rem; margin-bottom: 20px; }
+  .offer-card h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: 12px; }
+  .offer-card p { color: var(--muted); font-size: .9rem; line-height: 1.65; }
+
+  /* ── TESTIMONIALS ── */
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 64px;
+  }
+  .testi-card {
+    background: var(--gray);
+    border-radius: 12px;
+    padding: 32px 28px;
+    border: 1px solid rgba(255,255,255,.05);
+  }
+  .stars { color: var(--yellow); font-size: 1rem; letter-spacing: 2px; margin-bottom: 18px; }
+  .testi-text { font-size: .97rem; line-height: 1.7; color: #ccc; margin-bottom: 24px; }
+  .testi-author { display: flex; align-items: center; gap: 14px; }
+  .testi-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--fire), var(--yellow));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .testi-name { font-weight: 700; font-size: .95rem; }
+  .testi-role { font-size: .8rem; color: var(--muted); }
+
+  /* ── PRICING ── */
+  .pricing { background: var(--gray); }
+  .pricing-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 64px;
+    max-width: 900px;
+    margin-left: auto; margin-right: auto;
+  }
+  .price-card {
+    background: var(--dark);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    padding: 40px 32px;
+    text-align: center;
+    position: relative;
+    transition: transform .25s;
+  }
+  .price-card:hover { transform: translateY(-5px); }
+  .price-card.featured {
+    border-color: var(--fire);
+    background: linear-gradient(160deg, rgba(255,61,0,.06) 0%, var(--dark) 60%);
+  }
+  .popular-badge {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(90deg, var(--fire), #ff6a00);
+    color: #fff;
+    font-size: .72rem; font-weight: 800; letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 18px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+  .price-name { font-size: .8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .price-value { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: var(--text); line-height: 1; }
+  .price-value sup { font-size: 1.5rem; vertical-align: top; margin-top: 10px; margin-right: 2px; }
+  .price-period { font-size: .8rem; color: var(--muted); margin-top: 4px; margin-bottom: 28px; }
+  .price-features { list-style: none; text-align: left; margin-bottom: 36px; }
+  .price-features li {
+    font-size: .9rem; color: #bbb;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    display: flex; gap: 10px; align-items: center;
+  }
+  .price-features li::before { content: '✓'; color: var(--fire); font-weight: 900; flex-shrink: 0; }
+
+  /* ── FAQ ── */
+  .faq-list { margin-top: 60px; max-width: 780px; }
+  .faq-item {
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    padding: 24px 0;
+  }
+  .faq-q {
+    font-weight: 700; font-size: 1.02rem;
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 20px;
+  }
+  .faq-q::after {
+    content: '+';
+    font-size: 1.4rem; color: var(--fire); flex-shrink: 0;
+    transition: transform .3s;
+  }
+  .faq-item.open .faq-q::after { transform: rotate(45deg); }
+  .faq-a { color: var(--muted); font-size: .93rem; line-height: 1.7; max-height: 0; overflow: hidden; transition: max-height .35s ease, margin-top .3s; }
+  .faq-item.open .faq-a { max-height: 300px; margin-top: 14px; }
+
+  /* ── FINAL CTA ── */
+  .final-cta {
+    text-align: center;
+    background: linear-gradient(160deg, rgba(255,61,0,.12) 0%, var(--darker) 60%);
+    border-top: 1px solid rgba(255,61,0,.15);
+    padding: 120px 5%;
+  }
+  .final-cta h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+  .final-cta h2 span { color: var(--fire); }
+  .final-cta p { color: #999; font-size: 1.1rem; max-width: 520px; margin: 0 auto 40px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--darker);
+    text-align: center;
+    padding: 36px 5%;
+    border-top: 1px solid rgba(255,255,255,.05);
+    color: var(--muted);
+    font-size: .85rem;
+  }
+  footer a { color: var(--fire); text-decoration: none; }
+
+  /* ── WHATSAPP FLOAT ── */
+  .wa-float {
+    position: fixed; bottom: 28px; right: 28px; z-index: 200;
+    background: #25D366;
+    color: #fff;
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    box-shadow: 0 6px 24px rgba(37,211,102,.45);
+    text-decoration: none;
+    transition: transform .25s, box-shadow .25s;
+  }
+  .wa-float:hover { transform: scale(1.12); box-shadow: 0 10px 36px rgba(37,211,102,.6); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .hero-stats { gap: 24px; }
+    .step { flex-direction: column; gap: 8px; }
+    .step-num { font-size: 3rem; min-width: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">THIAGO <span>PERSONAL TRAINER</span> <span style="color:var(--text); font-size:1rem; letter-spacing:1px;">· Physical Trainer</span></div>
+  <a href="https://wa.me/5547988270575?text=Olá%20Thiago!%20Quero%20saber%20mais%20sobre%20a%20consultoria." class="cta-nav">Quero Começar →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <div class="badge">Personal Trainer • CREF 014145-G/SC</div>
+    <h1>
+      TRANSFORME<br>
+      SEU <span class="highlight">CORPO</span><br>
+      DE VERDADE
+    </h1>
+    <p class="hero-sub">
+      Consultoria da rotina de treinos 100% online, personalizada para o seu ritmo, sua rotina e seus objetivos reais. Sem desculpas, sem fórmula genérica.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contato" class="btn-primary">Quero minha consultoria</a>
+      <a href="#como-funciona" class="btn-ghost">Como funciona ↓</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">+1000</div>
+        <div class="stat-label">Alunos transformados</div>
+      </div>
+      <div>
+        <div class="stat-num">17</div>
+        <div class="stat-label">Anos de experiência</div>
+      </div>
+      <div>
+        <div class="stat-num">98%</div>
+        <div class="stat-label">Taxa de satisfação</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMS -->
+<section class="problems">
+  <div class="section-tag">Você se identifica?</div>
+  <h2 class="section-title">Essas <span>dores</span> te parecem familiares?</h2>
+  <p class="section-sub">Antes de qualquer mudança, é preciso reconhecer o que está travando seus resultados.</p>
+  <div class="problems-grid">
+    <div class="problem-card">
+      <div class="problem-icon">😓</div>
+      <h3>Treina mas não vê resultado</h3>
+      <p>Você se dedica, mas o espelho não mostra evolução. O problema pode estar na estratégia, não no esforço.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">🍕</div>
+      <h3>Não sabe como se alimentar</h3>
+      <p>Dieta restritiva demais, abandono rápido. Falta um plano que encaixe na sua vida real (dicas práticas dada por meus amigos nutricionistas).</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">⏰</div>
+      <h3>Falta de tempo e motivação</h3>
+      <p>Rotina corrida, cansaço acumulado. Treino fica sempre para "depois" – e depois nunca chega.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">🤷</div>
+      <h3>Não sabe por onde começar</h3>
+      <p>Tanta informação na internet que confunde mais do que ajuda. Você precisa de alguém que te oriente de verdade.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="como-funciona">
+  <div class="section-tag">Processo</div>
+  <h2 class="section-title">Como a consultoria <span>funciona</span></h2>
+  <p class="section-sub">Simples, direto e eficiente. Do primeiro contato até os seus resultados.</p>
+  <div class="steps-wrap">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <div class="step-tag">Anamnese Avaliativa</div>
+        <h3>Anamnese completa e avaliação inicial</h3>
+        <p>Você preenche um questionário detalhado sobre seu histórico, objetivos, rotina e limitações. Isso garante um plano 100% individualizado.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <div class="step-tag">Planejamento</div>
+        <h3>Montagem do seu treino personalizado</h3>
+        <p>Crio um programa de treino progressivo e adaptado à sua realidade: academia, condomínio, casa (ver disponibilidade de alguns materiais). Com foco no que realmente funciona para o seu biotipo.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <div class="step-tag">Acompanhamento</div>
+        <h3>Suporte contínuo via WhatsApp</h3>
+        <p>Tiro suas dúvidas, ajusto o treino conforme sua evolução e fico do seu lado durante toda a jornada. Você nunca vai estar sozinho.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <div class="step-tag">Resultados</div>
+        <h3>Revisões mensais e evolução constante</h3>
+        <p>Cada mês analisamos sua evolução, ajustamos protocolos e definimos as próximas metas. Progresso real, medido e celebrado.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFERS -->
+<section class="offers">
+  <div class="section-tag">O que está incluído</div>
+  <h2 class="section-title">Tudo que você <span>recebe</span></h2>
+  <p class="section-sub">Uma consultoria completa, do treino à orientação de hábitos.</p>
+  <div class="offers-grid">
+    <div class="offer-card">
+      <div class="offer-icon">🏋️</div>
+      <h3>Planilha de Treino Personalizada</h3>
+      <p>Programa montado especialmente para você, com exercícios, séries, repetições e vídeos de execução.</p>
+    </div>
+    <div class="offer-card">
+      <div class="offer-icon">🥗</div>
+      <h3>Orientação Alimentar</h3>
+      <p>Diretrizes nutricionais práticas e adaptadas à sua rotina (dicas de alimentação sempre dada por um nutricionista).</p>
+    </div>
+    <div class="offer-card">
+      <div class="offer-icon">📊</div>
+      <h3>Revisões e Ajustes Mensais</h3>
+      <p>Avaliação periódica da sua evolução com atualização do protocolo conforme seus resultados.</p>
+    </div>
+    <div class="offer-card">
+      <div class="offer-icon">💬</div>
+      <h3>Suporte no WhatsApp</h3>
+      <p>Resposta rápida para dúvidas, ajustes de treino e motivação quando você mais precisar.</p>
+    </div>
+    <div class="offer-card">
+      <div class="offer-icon">🧠</div>
+      <h3>Educação sobre Hábitos</h3>
+      <p>Aprenda a criar uma rotina sustentável de treino, descanso e alimentação que dura para sempre.</p>
+    </div>
+    <div class="offer-card">
+      <div class="offer-icon">📱</div>
+      <h3>Acesso à Plataforma Online</h3>
+      <p>Treinos e materiais disponíveis 24h no seu celular. Treine onde e quando quiser.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section>
+  <div class="section-tag">Resultados reais</div>
+  <h2 class="section-title">O que meus <span>alunos</span> dizem</h2>
+  <p class="section-sub">Histórias de pessoas que decidiram mudar e foram até o fim.</p>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"Em 3 meses com o Thiago eu perdi 8kg e ganhei mais disposição do que em anos tentando sozinha. O suporte dele é incrível, sempre disponível e muito atencioso."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">A</div>
+        <div>
+          <div class="testi-name">Ana Paula S.</div>
+          <div class="testi-role">Perdeu 8kg em 3 meses</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"Nunca imaginei conseguir ganhar massa muscular com minha rotina de trabalho. O Thiago adaptou tudo para minha realidade e os resultados vieram rápido."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">R</div>
+        <div>
+          <div class="testi-name">Ricardo M.</div>
+          <div class="testi-role">+5kg de massa muscular</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"Melhor investimento que fiz na minha saúde. O Thiago entende meus limites, me desafia na medida certa e a orientação alimentar mudou completamente minha relação com a comida."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">C</div>
+        <div>
+          <div class="testi-name">Camila R.</div>
+          <div class="testi-role">Aluna há 6 meses</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="planos">
+  <div class="section-tag">Investimento</div>
+  <h2 class="section-title">Escolha seu <span>plano</span></h2>
+  <p class="section-sub">Sem taxas escondidas, sem contratos longos. Você escolhe o que faz mais sentido para você.</p>
+  <div class="pricing-cards">
+    <div class="price-card">
+      <div class="price-name">Básico (mín. 3 meses)</div>
+      <div class="price-value"><sup>R$</sup>99</div>
+      <div class="price-period">por mês</div>
+      <ul class="price-features">
+        <li>Planilha de treino personalizada</li>
+        <li>Revisão mensal do protocolo</li>
+        <li>Suporte via WhatsApp (seg–sex)</li>
+      </ul>
+      <a href="#contato" class="btn-ghost" style="display:block; text-align:center;">Escolher plano</a>
+    </div>
+    <div class="price-card featured">
+      <div class="popular-badge">🔥 Mais Popular</div>
+      <div class="price-name">Premium (mín. 3 meses)</div>
+      <div class="price-value"><sup>R$</sup>160</div>
+      <div class="price-period">por mês</div>
+      <ul class="price-features">
+        <li>Tudo do plano Básico</li>
+        <li>Planilha de treino + reajustes semanais (quando preciso)</li>
+        <li>Suporte 5 dias por semana</li>
+        <li>Vídeo aula de execução dos exercícios</li>
+        <li>Check-in semanal de evolução</li>
+      </ul>
+      <a href="#contato" class="btn-primary" style="display:block; text-align:center;">Escolher plano</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-tag">Dúvidas Frequentes</div>
+  <h2 class="section-title">Perguntas <span>frequentes</span></h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">Preciso ter experiência com academia?</div>
+      <div class="faq-a">Não! A consultoria é adaptada para qualquer nível, do iniciante absoluto ao praticante avançado. O programa é montado de acordo com o seu ponto de partida.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Funciona sem academia, em casa?</div>
+      <div class="faq-a">Sim! Posso montar treinos para academia, em casa com ou sem equipamentos. Basta me informar na avaliação inicial.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Em quanto tempo verei resultados?</div>
+      <div class="faq-a">Resultados visíveis geralmente aparecem entre 4 e 8 semanas, dependendo da consistência e do objetivo. O mais importante é criar uma base sólida e sustentável.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Como funciona o suporte no WhatsApp?</div>
+      <div class="faq-a">Você envia suas dúvidas, vídeos de execução ou relatos do treino e eu respondo o mais rápido possível. Estou aqui para te apoiar durante toda a jornada.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Posso cancelar a qualquer momento?</div>
+      <div class="faq-a">Não. O plano de 3 meses é ininterrupto, mas você pode transferir para outra pessoa. Você pode transferir o plano ou trocar de plano (desde que seja a troca do treino básico para o plano Premium, não é permitido o contrário) antes da renovação.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta" id="contato">
+  <h2>PRONTO PARA<br><span>MUDAR?</span></h2>
+  <p>Clique abaixo e inicie sua transformação hoje mesmo. Vou te guiar em cada passo.</p>
+  <a href="https://wa.me/5547988270575?text=Olá%20Thiago!%20Quero%20saber%20mais%20sobre%20a%20consultoria%20de%20personal%20training." class="btn-primary" style="font-size:1.1rem; padding:20px 50px;">
+    💬 Falar com o Thiago no WhatsApp
+  </a>
+  <p style="margin-top:24px; font-size:.82rem; color:#555;">Sem compromisso. A primeira conversa é gratuita.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Thiago Personal Trainer · CREF 014145-G/SC · <a href="https://instagram.com/thiagopersonaltrainer">@thiagopersonaltrainer</a></p>
+  <p style="margin-top:8px; color:#444;">Feito com dedicação para transformar vidas.</p>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/5547988270575?text=Olá%20Thiago!%20Quero%20saber%20mais%20sobre%20a%20consultoria." class="wa-float" title="Falar no WhatsApp">💬</a>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.offer-card, .problem-card, .testi-card, .step, .price-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(28px)';
+    el.style.transition = 'opacity .55s ease, transform .55s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
